@@ -64,4 +64,12 @@ class MemberRepositoryTest {
     assertThat(this.repository.findAll().size()).isEqualTo(2);
     assertThat(this.repository.findById(2L).isEmpty()).isTrue();
   }
+
+  @Sql("/insert-members.sql")
+  @Test
+  void update() {
+    Member member = this.repository.findById(2L).get();
+    member.changeName("BC");
+    assertThat(this.repository.findById(2L).get().getName()).isEqualTo("BC");
+  }
 }

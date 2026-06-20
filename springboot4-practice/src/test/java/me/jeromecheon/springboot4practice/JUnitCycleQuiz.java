@@ -6,23 +6,23 @@ import org.junit.jupiter.api.Test;
 
 public class JUnitCycleQuiz {
 
-    @BeforeEach
-    public void beforeEach() {
-        System.out.println("Hello!");
-    }
+  @BeforeEach
+  public void beforeEach() {
+    System.out.println("Hello!");
+  }
 
-    @AfterEach
-    public void afterEach() {
-        System.out.println("Bye!");
-    }
+  @AfterEach
+  public void afterEach() {
+    System.out.println("Bye!");
+  }
 
-    @Test
-    public void juintQuiz3() {
-        System.out.println("This is first test");
-    }
+  @Test
+  public void juintQuiz3() {
+    System.out.println("This is first test");
+  }
 
-    @Test
-    public void juintQuiz4() {
-        System.out.println("This is second test");
-    }
+  @Test
+  public void juintQuiz4() {
+    System.out.println("This is second test");
+  }
 }

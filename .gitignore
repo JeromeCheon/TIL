@@ -1,0 +1,7 @@
+# env
+.env
+.env.local
+
+# intellij
+.idea
+.DS_Store

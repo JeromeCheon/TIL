@@ -45,11 +45,25 @@ TestController → TestService → MemberRepository (Spring Data JPA)
 
 ### 테스트 패턴
 
-MockMvc 테스트는 `@SpringBootTest` + `@AutoConfigureMockMvc`(Spring Boot WebMVC Test 모듈)를 사용하며, `WebApplicationContext`로 `MockMvc`를 직접 초기화한다.
+**MockMvc 통합 테스트** (`@SpringBootTest` + `@AutoConfigureMockMvc`): 전체 Spring Context를 띄워 REST API를 테스트한다. `WebApplicationContext`로 `MockMvc`를 직접 초기화한다.
 
 ```java
 @BeforeEach
 public void mockMvcSetUp() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+}
+```
+
+**JPA 슬라이스 테스트** (`@DataJpaTest`): JPA 레이어만 로드해 Repository를 빠르게 테스트한다. `@Sql`로 각 테스트마다 픽스처를 주입하고 `@AfterEach`에서 `deleteAll()`로 정리한다. SQL 픽스처는 `src/test/resources/`에 위치한다.
+
+```java
+@DataJpaTest
+class MemberRepositoryTest {
+    @AfterEach
+    public void cleanUp() { this.repository.deleteAll(); }
+
+    @Sql("/insert-members.sql")
+    @Test
+    void getMemberById() { ... }
 }
 ```

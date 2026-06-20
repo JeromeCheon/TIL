@@ -7,10 +7,10 @@ import java.util.List;
 
 @Service
 public class TestService {
-    @Autowired
-    MemberRepository memberRepository;
+  @Autowired
+  MemberRepository memberRepository;
 
-    public List<Member> getAllMembers() {
-        return memberRepository.findAll();
-    }
+  public List<Member> getAllMembers() {
+    return memberRepository.findAll();
+  }
 }

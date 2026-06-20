@@ -8,12 +8,12 @@ import java.util.List;
 
 @RestController
 public class TestController {
-    @Autowired
-    TestService testService;
+  @Autowired
+  TestService testService;
 
-    @GetMapping("/test")
-    public List<Member> getAllMembers() {
-        List<Member> members = testService.getAllMembers();
-        return members;
-    }
+  @GetMapping("/test")
+  public List<Member> getAllMembers() {
+    List<Member> members = testService.getAllMembers();
+    return members;
+  }
 }

@@ -20,41 +20,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class TestControllerTest {
-    @Autowired
-    protected MockMvc mockMvc;
+  @Autowired
+  protected MockMvc mockMvc;
 
-    @Autowired
-    private WebApplicationContext context;
+  @Autowired
+  private WebApplicationContext context;
 
-    @Autowired
-    private MemberRepository memberRepository;
+  @Autowired
+  private MemberRepository memberRepository;
 
-    @BeforeEach
-    public void mockMvcSetUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .build();
-    }
+  @BeforeEach
+  public void mockMvcSetUp() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+            .build();
+  }
 
-    @AfterEach
-    public void cleanUp() {
-        memberRepository.deleteAll();
-    }
+  @AfterEach
+  public void cleanUp() {
+    memberRepository.deleteAll();
+  }
 
-    @DisplayName("getAllMembers: 아티클 조회에 성공한다.")
-    @Test
-    public void getAllMembers() throws Exception {
-        // given
-        final String url = "/test";
-        Member savedMember = memberRepository.save(new Member("홍길동"));
+  @DisplayName("getAllMembers: 아티클 조회에 성공한다.")
+  @Test
+  public void getAllMembers() throws Exception {
+    // given
+    final String url = "/test";
+    Member savedMember = memberRepository.save(new Member("홍길동"));
 
-        // when
-        final ResultActions result = mockMvc.perform(get(url)
-                .accept(MediaType.APPLICATION_JSON));
+    // when
+    final ResultActions result = mockMvc.perform(get(url)
+            .accept(MediaType.APPLICATION_JSON));
 
-        // then
-        result
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(savedMember.getId()))
-                .andExpect(jsonPath("$[0].name").value(savedMember.getName()));
-    }
+    // then
+    result
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(savedMember.getId()))
+            .andExpect(jsonPath("$[0].name").value(savedMember.getName()));
+  }
 }

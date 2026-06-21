@@ -16,12 +16,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import tools.jackson.databind.ObjectMapper;
 
-import javax.xml.transform.Result;
-
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -68,5 +68,28 @@ class BlogApiControllerTest {
     assertThat(articles.size()).isEqualTo(1);
     assertThat(articles.getFirst().getTitle()).isEqualTo(title);
     assertThat(articles.getFirst().getContent()).isEqualTo(content);
+  }
+
+  @DisplayName("findAllArticles: 블로그 글 목록 조회에 성공한다.")
+  @Test
+  void findAllArticles() throws Exception {
+    // given
+    final String url = "/api/articles";
+    final String title = "title 1";
+    final String content = "content 2";
+
+    this.blogRepository.save(Article.builder().title(title).content(content).build());
+
+    // when
+    final ResultActions result = this.mockMvc.perform(
+            get(url)
+                    .accept(MediaType.APPLICATION_JSON_VALUE)
+    );
+    // then
+    result
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].title").value(title))
+            .andExpect(jsonPath("$[0].content").value(content));
+
   }
 }

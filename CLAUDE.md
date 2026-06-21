@@ -67,3 +67,56 @@ class MemberRepositoryTest {
     void getMemberById() { ... }
 }
 ```
+
+## spring4-blog-project
+
+Spring Boot 4.0.7 / Java 25 기반 블로그 API 실습 프로젝트. 빌드 도구는 Gradle(Groovy DSL).
+
+### 주요 명령어
+
+```bash
+# 프로젝트 루트는 spring4-blog-project/
+cd spring4-blog-project
+
+# 빌드
+./gradlew build
+
+# 전체 테스트
+./gradlew test
+
+# 애플리케이션 실행
+./gradlew bootRun
+```
+
+### 아키텍처
+
+```
+BlogApiController → BlogService → BlogRepository (Spring Data JPA)
+                                         ↓
+                                  Article (Entity, H2 in-memory)
+```
+
+- `import.sql`: 애플리케이션 실행 시 H2에 초기 데이터 삽입 (Spring Boot 기본 지원)
+- H2 Console: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:testdb`)
+
+### API 엔드포인트
+
+| Method | URL                  | 설명              |
+| ------ | -------------------- | ----------------- |
+| POST   | `/api/articles`      | 글 생성           |
+| GET    | `/api/articles`      | 전체 글 목록 조회 |
+| GET    | `/api/articles/{id}` | 단건 조회         |
+| DELETE | `/api/articles/{id}` | 글 삭제           |
+| PUT    | `/api/articles/{id}` | 글 수정           |
+
+### 테스트 패턴
+
+**MockMvc 통합 테스트** (`BlogApiControllerTest`): `@SpringBootTest` + `@AutoConfigureMockMvc`로 전체 Context를 띄워 각 API를 검증한다. `@BeforeEach`에서 `blogRepository.deleteAll()`로 상태를 초기화한다.
+
+```java
+@BeforeEach
+public void mockMvcSetup() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+    this.blogRepository.deleteAll();
+}
+```

@@ -2,6 +2,7 @@ package me.jeromecheon.spring4blogproject.controller;
 
 import me.jeromecheon.spring4blogproject.domain.Article;
 import me.jeromecheon.spring4blogproject.dto.AddArticleRequest;
+import me.jeromecheon.spring4blogproject.dto.UpdateArticleRequest;
 import me.jeromecheon.spring4blogproject.repository.BlogRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -135,5 +136,37 @@ class BlogApiControllerTest {
     // then
     List<Article> articles = this.blogRepository.findAll();
     assertThat(articles).isEmpty();
+  }
+
+  @DisplayName("updateArticleById: 블로그 글 수정에 성공한다.")
+  @Test
+  void updateArticleById() throws Exception {
+    // given
+    final String url = "/api/articles/{id}";
+    final String title = "title";
+    final String content = "content";
+
+    Article article = this.blogRepository.save(
+            Article.builder().title(title).content(content).build()
+    );
+
+    final String newTitle = "new title";
+    final String newContent = "new content";
+
+    UpdateArticleRequest request = new UpdateArticleRequest(newTitle, newContent);
+
+    // when
+    ResultActions result = this.mockMvc.perform(
+            put(url, article.getId())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(this.objectMapper.writeValueAsString(request))
+    );
+    // then
+    result.andExpect(status().isOk());
+
+    Article updatedArticle = this.blogRepository.findById(article.getId()).get();
+
+    assertThat(updatedArticle.getTitle()).isEqualTo(newTitle);
+    assertThat(updatedArticle.getContent()).isEqualTo(newContent);
   }
 }

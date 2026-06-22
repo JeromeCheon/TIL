@@ -1,11 +1,14 @@
 package me.jeromecheon.spring4blogproject.controller;
 
 import lombok.RequiredArgsConstructor;
+import me.jeromecheon.spring4blogproject.domain.Article;
 import me.jeromecheon.spring4blogproject.dto.ArticleListViewResponse;
+import me.jeromecheon.spring4blogproject.dto.ArticleViewResponse;
 import me.jeromecheon.spring4blogproject.service.BlogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -22,5 +25,13 @@ public class BlogViewController {
             .toList();
     model.addAttribute("articles", articles);
     return "articleList";
+  }
+
+  @GetMapping("/articles/{id}")
+  public String getArticle(@PathVariable Long id, Model model) {
+    Article article = this.blogService.findById(id);
+    model.addAttribute("article", new ArticleViewResponse(article));
+
+    return "article";
   }
 }

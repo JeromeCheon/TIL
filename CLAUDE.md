@@ -91,9 +91,10 @@ cd spring4-blog-project
 ### 아키텍처
 
 ```
-BlogApiController → BlogService → BlogRepository (Spring Data JPA)
-                                         ↓
-                                  Article (Entity, H2 in-memory)
+BlogApiController  ┐
+BlogViewController ┴→ BlogService → BlogRepository (Spring Data JPA)
+                                           ↓
+                                    Article (Entity, H2 in-memory)
 ```
 
 - `import.sql`: 애플리케이션 실행 시 H2에 초기 데이터 삽입 (Spring Boot 기본 지원)
@@ -108,6 +109,16 @@ BlogApiController → BlogService → BlogRepository (Spring Data JPA)
 | GET    | `/api/articles/{id}` | 단건 조회         |
 | DELETE | `/api/articles/{id}` | 글 삭제           |
 | PUT    | `/api/articles/{id}` | 글 수정           |
+
+### 뷰 엔드포인트 (Thymeleaf)
+
+| Method | URL              | 템플릿           | 설명            |
+| ------ | ---------------- | ---------------- | --------------- |
+| GET    | `/articles`      | articleList.html | 글 목록 페이지  |
+| GET    | `/articles/{id}` | article.html     | 글 상세 페이지  |
+| GET    | `/new-article`   | newArticle.html  | 글 생성/수정 폼 |
+
+- `static/js/article.js`: 글 생성·수정·삭제 fetch API 호출 처리
 
 ### 테스트 패턴
 

@@ -92,13 +92,17 @@ cd spring4-blog-project
 
 ```
 BlogApiController  ┐
-BlogViewController ┴→ BlogService → BlogRepository (Spring Data JPA)
-                                           ↓
-                                    Article (Entity, H2 in-memory)
+BlogViewController ┤→ BlogService → BlogRepository (Spring Data JPA)
+UserApiController  ┤                       ↓
+UserViewController ┘               Article (Entity, H2 in-memory)
+                   UserService → UserRepository
+                                       ↓
+                                User (Entity, H2 in-memory)
 ```
 
 - `import.sql`: 애플리케이션 실행 시 H2에 초기 데이터 삽입 (Spring Boot 기본 지원)
 - H2 Console: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:testdb`)
+- `WebSecurityConfig`: Spring Security 필터 체인 설정 — `/login`, `/signup`, `/user` 허용, 나머지 인증 필요. H2 콘솔·정적 리소스는 Security 제외.
 
 ### API 엔드포인트
 
@@ -117,6 +121,15 @@ BlogViewController ┴→ BlogService → BlogRepository (Spring Data JPA)
 | GET    | `/articles`      | articleList.html | 글 목록 페이지  |
 | GET    | `/articles/{id}` | article.html     | 글 상세 페이지  |
 | GET    | `/new-article`   | newArticle.html  | 글 생성/수정 폼 |
+| GET    | `/login`         | login.html       | 로그인 페이지   |
+| GET    | `/signup`        | signup.html      | 회원가입 페이지 |
+
+### 인증 API 엔드포인트
+
+| Method | URL       | 설명                              |
+| ------ | --------- | --------------------------------- |
+| POST   | `/user`   | 회원가입 (BCrypt 암호화 후 저장)  |
+| GET    | `/logout` | 로그아웃 (SecurityContext 초기화) |
 
 - `static/js/article.js`: 글 생성·수정·삭제 fetch API 호출 처리
 

@@ -13,8 +13,8 @@
 ### spring4-blog-project
 
 - **목적:** Spring Boot 4 기반 REST API + JPA 실습
-- **기술 스택:** Spring Boot 4.0.7 · Java 25 · Spring Data JPA · H2 · Lombok · Thymeleaf · Spring Security · JUnit5
-- **기능:** Article CRUD REST API + Thymeleaf 뷰 (목록/상세/생성/수정/삭제) + Spring Security 로그인/회원가입
+- **기술 스택:** Spring Boot 4.0.7 · Java 25 · Spring Data JPA · H2 · Lombok · Thymeleaf · Spring Security · JJWT · JUnit5
+- **기능:** Article CRUD REST API + Thymeleaf 뷰 (목록/상세/생성/수정/삭제) + Spring Security 로그인/회원가입 + JWT 인증 (액세스/리프레시 토큰)
 - **참고 도서:** 스프링 부트 4 개발자 되기 + AI 자바편 — 신선영 저
 
 ## 디렉토리 구조

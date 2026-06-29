@@ -8,7 +8,6 @@ spring:
       hibernate:
         format_sql: true
 
-
     # 테이블 생성 후에 data.sql 실행
     defer-datasource-initialization: true
   datasource:
@@ -17,6 +16,13 @@ spring:
   h2:
     console:
       enabled: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
 jwt:
-  issuer: ajufresh@gmail.com
-  secret_key: study-springboot
+  issuer: ${JWT_ISSUER}
+  secret_key: ${JWT_SECRET_KEY}

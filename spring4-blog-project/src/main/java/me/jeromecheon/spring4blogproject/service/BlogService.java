@@ -16,8 +16,8 @@ import java.util.List;
 public class BlogService {
   private final BlogRepository blogRepository;
 
-  public Article save(AddArticleRequest request) {
-    return this.blogRepository.save(request.toEntity());
+  public Article save(AddArticleRequest request, String userName) {
+    return this.blogRepository.save(request.toEntity(userName));
   }
 
   public List<Article> findAll() {

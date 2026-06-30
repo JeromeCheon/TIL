@@ -6,6 +6,7 @@ import me.jeromecheon.spring4blogproject.domain.Article;
 import me.jeromecheon.spring4blogproject.dto.AddArticleRequest;
 import me.jeromecheon.spring4blogproject.dto.UpdateArticleRequest;
 import me.jeromecheon.spring4blogproject.repository.BlogRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,9 @@ public class BlogService {
   }
 
   public void delete(Long id) {
+    Article article = this.blogRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+    authorizeArticleAuthor(article);
     this.blogRepository.deleteById(id);
   }
 
@@ -36,8 +40,17 @@ public class BlogService {
   public Article update(long id, UpdateArticleRequest request) {
     Article article = this.blogRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+
+    authorizeArticleAuthor(article);
     article.update(request.getTitle(), request.getContent());
 
     return article;
+  }
+
+  private static void authorizeArticleAuthor(Article article) {
+    String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+    if (!article.getAuthor().equals(userName)) {
+      throw new IllegalArgumentException("not authorized");
+    }
   }
 }

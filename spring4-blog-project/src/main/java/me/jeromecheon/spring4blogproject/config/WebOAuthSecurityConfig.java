@@ -83,8 +83,8 @@ public class WebOAuthSecurityConfig {
   }
 
   @Bean
-  public TokenAuthenticationFilter tokenAuthenticationFilter() throws Exception {
-    return new TokenAuthenticationFilter(this.tokenProvider);
+  public TokenAuthenticationFilter tokenAuthenticationFilter() {
+    return new TokenAuthenticationFilter(tokenProvider);
   }
 
   @Bean

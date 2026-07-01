@@ -106,8 +106,10 @@ TokenApiController ┘
 
 - `import.sql`: 애플리케이션 실행 시 H2에 초기 데이터 삽입 (Spring Boot 기본 지원)
 - H2 Console: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:testdb`)
-- `WebSecurityConfig`: Spring Security 필터 체인 설정 — `/login`, `/signup`, `/user` 허용, 나머지 인증 필요. H2 콘솔·정적 리소스는 Security 제외.
+- `WebOAuthSecurityConfig`: Spring Security 필터 체인 설정 — CSRF·세션 비활성화(Stateless), `/api/token` 허용, `/api/**` 인증 필요, 나머지 permitAll. H2 콘솔·정적 리소스는 Security 제외. Google OAuth2 로그인 설정 포함.
 - `TokenAuthenticationFilter`: 매 요청마다 Authorization 헤더의 JWT를 검증하고 `SecurityContextHolder`에 인증 정보를 등록하는 `OncePerRequestFilter` 구현체.
+- `OAuth2UserCustomService`: Google에서 받은 사용자 정보로 DB에 upsert 처리 (`DefaultOAuth2UserService` 확장).
+- `OAuth2SuccessHandler`: OAuth2 로그인 성공 후 JWT 발급, refresh token 쿠키 설정, `/articles?token=...`으로 리다이렉트.
 
 ### API 엔드포인트
 
@@ -121,23 +123,25 @@ TokenApiController ┘
 
 ### 뷰 엔드포인트 (Thymeleaf)
 
-| Method | URL              | 템플릿           | 설명            |
-| ------ | ---------------- | ---------------- | --------------- |
-| GET    | `/articles`      | articleList.html | 글 목록 페이지  |
-| GET    | `/articles/{id}` | article.html     | 글 상세 페이지  |
-| GET    | `/new-article`   | newArticle.html  | 글 생성/수정 폼 |
-| GET    | `/login`         | login.html       | 로그인 페이지   |
-| GET    | `/signup`        | signup.html      | 회원가입 페이지 |
+| Method | URL              | 템플릿           | 설명                                                            |
+| ------ | ---------------- | ---------------- | --------------------------------------------------------------- |
+| GET    | `/articles`      | articleList.html | 글 목록 페이지                                                  |
+| GET    | `/articles/{id}` | article.html     | 글 상세 페이지                                                  |
+| GET    | `/new-article`   | newArticle.html  | 글 생성/수정 폼                                                 |
+| GET    | `/login`         | oauthLogin.html  | Google 로그인 페이지 (인증된 사용자는 `/articles`로 리다이렉트) |
+| GET    | `/signup`        | signup.html      | 회원가입 페이지                                                 |
 
 ### 인증 API 엔드포인트
 
-| Method | URL          | 설명                                        |
-| ------ | ------------ | ------------------------------------------- |
-| POST   | `/user`      | 회원가입 (BCrypt 암호화 후 저장)            |
-| GET    | `/logout`    | 로그아웃 (SecurityContext 초기화)           |
-| POST   | `/api/token` | 액세스 토큰 재발급 (리프레시 토큰으로 요청) |
+| Method | URL                            | 설명                                                              |
+| ------ | ------------------------------ | ----------------------------------------------------------------- |
+| POST   | `/user`                        | 회원가입 (BCrypt 암호화 후 저장)                                  |
+| GET    | `/oauth2/authorization/google` | Google OAuth2 인증 시작                                           |
+| POST   | `/api/token`                   | 액세스 토큰 재발급 (리프레시 토큰으로 요청)                       |
+| DELETE | `/api/refresh-token`           | JWT 로그아웃 — DB에서 refresh token 삭제 (access_token 인증 필요) |
 
-- `static/js/article.js`: 글 생성·수정·삭제 fetch API 호출 처리
+- `static/js/token.js`: OAuth2 로그인 후 URL 파라미터의 access_token을 localStorage에 저장
+- `static/js/article.js`: 글 CRUD fetch 처리. `httpRequest()` JWT 헬퍼(401 시 토큰 갱신 후 재시도) 및 로그아웃 핸들러 포함
 
 ### 테스트 패턴
 

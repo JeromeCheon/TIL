@@ -17,7 +17,7 @@ public class CookieUtil {
 
   public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
     Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
+    if (cookies == null) {
       return ;
     }
 

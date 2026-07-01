@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.sql.Ref;
 import java.time.Duration;
 
 @RequiredArgsConstructor
@@ -33,18 +32,16 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
   private final UserService userService;
 
   @Override
-  public void onAuthenticationSuccess(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      Authentication authentication) throws IOException {
+  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
     OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-    User user = this.userService.findByEmail((String) oAuth2User.getAttributes().get("email"));
+    User user = userService.findByEmail((String) oAuth2User.getAttributes().get("email"));
 
-    String refreshToken = this.tokenProvider.generateToken(user, REFRESH_TOKEN_DURATION);
+    String refreshToken = tokenProvider.generateToken(user, REFRESH_TOKEN_DURATION);
     saveRefreshToken(user.getId(), refreshToken);
     addRefreshTokenToCookie(request, response, refreshToken);
 
-    String accessToken = this.tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
-    String targetUrl = this.getTargetUrl(accessToken);
+    String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
+    String targetUrl = getTargetUrl(accessToken);
 
     clearAuthenticationAttributes(request, response);
 
@@ -52,14 +49,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
   }
 
   private void saveRefreshToken(Long userId, String newRefreshToken) {
-    RefreshToken refreshToken = this.refreshTokenRepository.findByUserId(userId)
+    RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
             .map(entity -> entity.update(newRefreshToken))
             .orElse(new RefreshToken(userId, newRefreshToken));
-    this.refreshTokenRepository.save(refreshToken);
+
+    refreshTokenRepository.save(refreshToken);
   }
 
-  private void addRefreshTokenToCookie(
-          HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+  private void addRefreshTokenToCookie(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
     int cookieMaxAge = (int) REFRESH_TOKEN_DURATION.toSeconds();
     CookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
     CookieUtil.addCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, cookieMaxAge);
@@ -67,7 +64,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
   private void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
     super.clearAuthenticationAttributes(request);
-    this.authorizationRequestRepository.removeAuthorizationRequestCookie(request, response);
+    authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
   }
 
   private String getTargetUrl(String token) {
@@ -76,5 +73,4 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             .build()
             .toUriString();
   }
-
 }

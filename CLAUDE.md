@@ -68,6 +68,34 @@ class MemberRepositoryTest {
 }
 ```
 
+## 커스텀 커맨드 (.claude/commands/)
+
+### /practice/skeletonize
+
+Spring Boot 4 / Java 25 기반 프로젝트의 완성된 구현을 **git 이력 보존형 학습 스켈레톤**으로 변환한다.
+
+```bash
+# 기본 사용 (base = main)
+/practice/skeletonize
+
+# 특정 base 브랜치 지정
+/practice/skeletonize feature/branch-name
+```
+
+**특징:**
+
+- 커밋 없이 unstaged 변경만 유지 — 브랜치 이력 보존
+- `git diff HEAD -- <파일>` 로 정답(완성 구현) 확인
+- `git restore <파일>` 로 언제든 복구 가능
+
+**변환 규칙:**
+
+- Spring 스테레오타입 어노테이션 제거 (학습 목표) — `// TODO:` 가이드 주석으로 대체
+- 필드·메서드 바디 제거 — 번호 매긴 로직 흐름 주석으로 대체
+- 메서드 시그니처·메서드 레벨 어노테이션은 유지
+
+---
+
 ## spring4-blog-project
 
 Spring Boot 4.0.7 / Java 25 기반 블로그 API 실습 프로젝트. 빌드 도구는 Gradle(Groovy DSL).

@@ -6,6 +6,7 @@ import me.jeromecheon.spring4blogproject.dto.AddArticleRequest;
 import me.jeromecheon.spring4blogproject.dto.UpdateArticleRequest;
 import me.jeromecheon.spring4blogproject.repository.BlogRepository;
 import me.jeromecheon.spring4blogproject.repository.UserRepository;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -75,14 +76,16 @@ class BlogApiControllerTest {
     );
   }
 
-  @DisplayName("addArticle: 블로그 글 추가에 성공한다.")
+  @DisplayName("addArticle: 아티클 추가할 때 title이 null이면 실패한다.")
   @Test
-  void addArticle() throws Exception {
+  public void addArticleNullValidation() throws Exception {
     // given
     final String url = "/api/articles";
-    final String title = "title";
+    final String title = "null";
     final String content = "content";
     final AddArticleRequest request = new AddArticleRequest(title, content);
+
+    final String requestBody = this.objectMapper.writeValueAsString(request);
 
     Principal principal = Mockito.mock(Principal.class);
     Mockito.when(principal.getName()).thenReturn("username");
@@ -91,7 +94,62 @@ class BlogApiControllerTest {
             post(url)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .principal(principal)
-                    .content(this.objectMapper.writeValueAsString(request))
+                    .content(requestBody)
+    );
+    // then
+    result
+            .andExpect(status().isBadRequest());
+  }
+
+  @DisplayName("addArticle: 아티클 추가할 때 title이 10자를 넘으면 실패한다.")
+  @Test
+  public void addArticleSizeValidation() throws Exception {
+    // given
+    Faker faker = new Faker();
+
+    final String url = "/api/articles";
+    final String title = faker.lorem().characters(11);
+    final String content = "content";
+    final AddArticleRequest request = new AddArticleRequest(title, content);
+
+    final String requestBody = this.objectMapper.writeValueAsString(request);
+    Principal principal = Mockito.mock(Principal.class);
+    Mockito.when(principal.getName()).thenReturn("username");
+    // when
+    final ResultActions result = this.mockMvc.perform(
+            post(url)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .principal(principal)
+                    .content(requestBody)
+    );
+    // then
+    result
+            .andExpect(status().isCreated());
+
+    List<Article> articles = this.blogRepository.findAll();
+    assertThat(articles.size()).isEqualTo(1);
+    assertThat(articles.getFirst().getTitle()).isEqualTo(title);
+    assertThat(articles.getFirst().getContent()).isEqualTo(content);
+  }
+
+  @DisplayName("addArticle: 블로그 글 추가에 성공한다.")
+  @Test
+  void addArticle() throws Exception {
+    // given
+    final String url = "/api/articles";
+    final String title = "null";
+    final String content = "content";
+    final AddArticleRequest request = new AddArticleRequest(title, content);
+
+    final String requestBody = this.objectMapper.writeValueAsString(request);
+    Principal principal = Mockito.mock(Principal.class);
+    Mockito.when(principal.getName()).thenReturn("username");
+    // when
+    final ResultActions result = this.mockMvc.perform(
+            post(url)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .principal(principal)
+                    .content(requestBody)
     );
     // then
     result

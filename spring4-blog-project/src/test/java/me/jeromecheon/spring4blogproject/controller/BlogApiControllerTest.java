@@ -1,5 +1,6 @@
 package me.jeromecheon.spring4blogproject.controller;
 
+import me.jeromecheon.spring4blogproject.config.error.ErrorCode;
 import me.jeromecheon.spring4blogproject.domain.Article;
 import me.jeromecheon.spring4blogproject.domain.User;
 import me.jeromecheon.spring4blogproject.dto.AddArticleRequest;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,7 +83,7 @@ class BlogApiControllerTest {
   public void addArticleNullValidation() throws Exception {
     // given
     final String url = "/api/articles";
-    final String title = "null";
+    final String title = null;
     final String content = "content";
     final AddArticleRequest request = new AddArticleRequest(title, content);
 
@@ -124,12 +126,7 @@ class BlogApiControllerTest {
     );
     // then
     result
-            .andExpect(status().isCreated());
-
-    List<Article> articles = this.blogRepository.findAll();
-    assertThat(articles.size()).isEqualTo(1);
-    assertThat(articles.getFirst().getTitle()).isEqualTo(title);
-    assertThat(articles.getFirst().getContent()).isEqualTo(content);
+            .andExpect(status().isBadRequest());
   }
 
   @DisplayName("addArticle: 블로그 글 추가에 성공한다.")
@@ -137,7 +134,7 @@ class BlogApiControllerTest {
   void addArticle() throws Exception {
     // given
     final String url = "/api/articles";
-    final String title = "null";
+    final String title = "title";
     final String content = "content";
     final AddArticleRequest request = new AddArticleRequest(title, content);
 
@@ -197,6 +194,42 @@ class BlogApiControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title").value(savedArticle.getTitle()))
             .andExpect(jsonPath("$.content").value(savedArticle.getContent()));
+  }
+
+  @DisplayName("findArticleById: 잘못된 HTTP 메서드로 아티클을 조회하려고 하면 조회에 실패한다.")
+  @Test
+  public void invalidHttpMethod() throws Exception {
+    // given
+    final String url = "/api/articles/{id}";
+
+
+    // when
+    final ResultActions result = this.mockMvc.perform(
+            post(url, 1)
+    );
+    // then
+    result
+            .andDo(print())
+            .andExpect(status().isMethodNotAllowed())
+            .andExpect(jsonPath("$.message").value(ErrorCode.METHOD_NOT_ALLOWED.getMessage()));
+  }
+
+  @DisplayName("findArticle: 존재하지 않는 아티클을 조회하려고 하면 조회에 실패한다.")
+  @Test
+  public void findArticleInvalidArticle() throws Exception {
+    // given
+    final String url = "/api/articles/{id}";
+    final long invalidId = 1;
+
+    // when
+    final ResultActions resultActions = mockMvc.perform(get(url, invalidId));
+
+    // then
+    resultActions
+            .andDo(print())
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message").value(ErrorCode.ARTICLE_NOT_FOUND.getMessage()))
+            .andExpect(jsonPath("$.code").value(ErrorCode.ARTICLE_NOT_FOUND.getCode()));
   }
 
   @DisplayName("deleteArticleById: 블로그 글 삭제에 성공한다.")

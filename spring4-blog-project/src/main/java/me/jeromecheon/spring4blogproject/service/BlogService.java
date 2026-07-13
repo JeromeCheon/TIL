@@ -2,6 +2,7 @@ package me.jeromecheon.spring4blogproject.service;
 
 
 import lombok.RequiredArgsConstructor;
+import me.jeromecheon.spring4blogproject.config.error.exception.ArticleNotFoundException;
 import me.jeromecheon.spring4blogproject.domain.Article;
 import me.jeromecheon.spring4blogproject.dto.AddArticleRequest;
 import me.jeromecheon.spring4blogproject.dto.UpdateArticleRequest;
@@ -26,7 +27,7 @@ public class BlogService {
   }
 
   public Article findById(Long id) {
-    return this.blogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+    return this.blogRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
   }
 
   public void delete(Long id) {

@@ -3,8 +3,10 @@ package me.jeromecheon.spring4blogproject.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jeromecheon.spring4blogproject.domain.Article;
+import me.jeromecheon.spring4blogproject.domain.Comment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -14,6 +16,7 @@ public class ArticleViewResponse {
   private String content;
   private LocalDateTime createdAt;
   private String author;
+  private List<Comment> comments;
 
   public ArticleViewResponse(Article article) {
     this.id = article.getId();
@@ -21,5 +24,6 @@ public class ArticleViewResponse {
     this.content = article.getContent();
     this.author = article.getAuthor();
     this.createdAt = article.getCreatedAt();
+    this.comments = article.getComments();
   }
 }

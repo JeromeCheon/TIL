@@ -2,9 +2,8 @@ package me.jeromecheon.spring4blogproject.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.jeromecheon.spring4blogproject.domain.Article;
-import me.jeromecheon.spring4blogproject.dto.AddArticleRequest;
-import me.jeromecheon.spring4blogproject.dto.ArticleResponse;
-import me.jeromecheon.spring4blogproject.dto.UpdateArticleRequest;
+import me.jeromecheon.spring4blogproject.domain.Comment;
+import me.jeromecheon.spring4blogproject.dto.*;
 import me.jeromecheon.spring4blogproject.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +57,12 @@ public class BlogApiController {
     Article updatedArticle = this.blogService.update(id, request);
 
     return ResponseEntity.ok().body(updatedArticle);
+  }
+
+  @PostMapping("/api/comments")
+  public ResponseEntity<AddCommentResponse> addComment(
+          @RequestBody AddCommentRequest request, Principal principal) {
+    Comment comment = this.blogService.addComment(request, principal.getName());
+    return ResponseEntity.status(HttpStatus.CREATED).body(new AddCommentResponse(comment));
   }
 }

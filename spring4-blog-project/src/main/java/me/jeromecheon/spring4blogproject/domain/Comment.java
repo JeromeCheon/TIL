@@ -6,51 +6,38 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+@Table(name = "comments")
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Article {
+public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", updatable = false)
   private Long id;
 
-  @Column(name = "title", nullable = false)
-  private String title;
+  @Column(name = "author", nullable = false)
+  private String author;
 
   @Column(name = "content", nullable = false)
   private String content;
 
-  @Column(name = "author", nullable = false)
-  private String author;
-
-  @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
-  private List<Comment> comments;
-
   @CreatedDate
-  @Column(name="created_at")
+  @Column(name = "created_at")
   private LocalDateTime createdAt;
 
-  @LastModifiedDate
-  @Column(name="updated_at")
-  private LocalDateTime updatedAt;
+  @ManyToOne
+  private Article article;
 
   @Builder
-  public Article(String author, String title, String content) {
+  public Comment(Article article, String author, String content) {
+    this.article = article;
     this.author = author;
-    this.title = title;
-    this.content = content;
-  }
-
-  public void update(String title, String content) {
-    this.title = title;
     this.content = content;
   }
 }

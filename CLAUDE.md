@@ -148,6 +148,7 @@ TokenApiController ┘
 | GET    | `/api/articles/{id}` | 단건 조회         |
 | DELETE | `/api/articles/{id}` | 글 삭제           |
 | PUT    | `/api/articles/{id}` | 글 수정           |
+| POST   | `/api/comments`      | 댓글 작성         |
 
 ### 뷰 엔드포인트 (Thymeleaf)
 

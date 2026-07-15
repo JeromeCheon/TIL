@@ -78,6 +78,7 @@ TokenApiController ─┘
 | GET    | `/api/articles/{id}` | 단건 조회          | 불필요 |
 | DELETE | `/api/articles/{id}` | 글 삭제 (작성자만) | 필요   |
 | PUT    | `/api/articles/{id}` | 글 수정 (작성자만) | 필요   |
+| POST   | `/api/comments`      | 댓글 작성          | 필요   |
 
 ### 인증 API
 
@@ -218,6 +219,23 @@ cd spring4-blog-project
 - [x] `CookieUtil.deleteCookie()` null guard 반전 버그 수정
 - [x] Google OAuth2 scope 오류 수정 (`profile`, `email`로 제한)
 - [x] 로그아웃 버튼 `onclick` 속성 충돌 버그 수정
+
+### 검증 · 예외 처리
+
+- [x] DTO 검증 — `@Validated` + `@NotNull`, `@Size` 어노테이션 적용
+- [x] 전역 예외 처리 — `@ControllerAdvice` 기반 `GlobalExceptionHandler`
+- [x] `ErrorCode` 열거형 정의 (ARTICLE_NOT_FOUND, METHOD_NOT_ALLOWED 등)
+- [x] 일관된 에러 응답 포맷 (`ErrorResponse` DTO)
+- [x] `ArticleNotFoundException` 커스텀 예외 정의
+
+### 댓글 기능
+
+- [x] `Comment` 엔티티 (Article과 1:N 관계, cascade REMOVE)
+- [x] `CommentRepository` (Spring Data JPA)
+- [x] `POST /api/comments` 댓글 작성 API
+- [x] `AddCommentRequest`, `AddCommentResponse` DTO
+- [x] 댓글 조회 (글 상세 페이지에서 댓글 목록 표시)
+- [x] 댓글 UI (article.html) — 댓글 폼 및 댓글 목록
 
 ---
 

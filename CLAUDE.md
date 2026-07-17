@@ -100,6 +100,8 @@ Spring Boot 4 / Java 25 기반 프로젝트의 완성된 구현을 **git 이력 
 
 Spring Boot 4.0.7 / Java 25 기반 블로그 API 실습 프로젝트. 빌드 도구는 Gradle(Groovy DSL).
 
+**기능:** Article CRUD REST API + Thymeleaf 뷰 (목록/상세/생성/수정/삭제) + 댓글 작성/조회 + Spring Security 로그인/회원가입 + JWT 인증 (액세스/리프레시 토큰) + DTO 검증 + 전역 예외 처리
+
 ### 주요 명령어
 
 ```bash
@@ -120,16 +122,14 @@ cd spring4-blog-project
 
 ```
 BlogApiController  ┐
-BlogViewController ┤→ BlogService → BlogRepository (Spring Data JPA)
-UserApiController  ┤                       ↓
-UserViewController ┤               Article (Entity, H2 in-memory)
-TokenApiController ┘
-                   UserService → UserRepository
-                                       ↓
-                                User (Entity, H2 in-memory)
-                   TokenService → RefreshTokenRepository
-                                       ↓
-                                RefreshToken (Entity, H2 in-memory)
+BlogViewController ┤→ BlogService      → BlogRepository (Spring Data JPA)     → Article (Entity)
+UserApiController  ┤                            ↓                                 ↓
+UserViewController ┤                   CommentRepository                    Comment (Entity)
+TokenApiController ┘                            ↓
+                                    GlobalExceptionHandler (@ControllerAdvice)
+                   UserService      → UserRepository      → User (Entity)
+                   TokenService     → RefreshTokenRepository → RefreshToken (Entity)
+                   OAuth2UserCustomService (Google 사용자 upsert)
 ```
 
 - `import.sql`: 애플리케이션 실행 시 H2에 초기 데이터 삽입 (Spring Boot 기본 지원)
@@ -138,6 +138,8 @@ TokenApiController ┘
 - `TokenAuthenticationFilter`: 매 요청마다 Authorization 헤더의 JWT를 검증하고 `SecurityContextHolder`에 인증 정보를 등록하는 `OncePerRequestFilter` 구현체.
 - `OAuth2UserCustomService`: Google에서 받은 사용자 정보로 DB에 upsert 처리 (`DefaultOAuth2UserService` 확장).
 - `OAuth2SuccessHandler`: OAuth2 로그인 성공 후 JWT 발급, refresh token 쿠키 설정, `/articles?token=...`으로 리다이렉트.
+- `GlobalExceptionHandler`: `@ControllerAdvice` 기반 전역 예외 처리. `ErrorCode` 열거형과 `ErrorResponse` DTO로 API 전체에 일관된 에러 응답 포맷 제공.
+- `Article`-`Comment` 1:N 관계: Article 삭제 시 연관된 Comment도 자동 삭제 (cascade REMOVE).
 
 ### API 엔드포인트
 

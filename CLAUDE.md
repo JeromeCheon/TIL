@@ -185,3 +185,27 @@ public void mockMvcSetup() {
     this.blogRepository.deleteAll();
 }
 ```
+
+---
+
+## harness-engineering-with-claude
+
+"하네스 엔지니어링 with 클로드 코드" 도서를 따라 AI 에이전트 팀 설계 및 하네스 엔지니어링 실전 학습.
+
+**주제**: 하네스 엔지니어링 (Harness Engineering) · Claude Code · AI 에이전트 오케스트레이션 · 멀티에이전트 아키텍처
+
+**학습 목표**:
+
+- ATVO(권한·도구·검증·관측)를 설계하는 하네스 엔지니어링 방법론
+- AI 에이전트를 단순 도구가 아닌 스스로 일하는 팀으로 설계·운영
+- 메타스킬, 아키텍처 패턴, 에이전트 팀 구성 사례
+
+**참고 도서**: 하네스 엔지니어링 with 클로드 코드 — 황민호 (로빈 황) 저
+
+- 교보문고: https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000013110065
+- 알라딘: https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=393763673
+
+**콘텐츠 구조**:
+
+- Part 1: 하네스 엔지니어링의 기초 개념
+  - `part1/01-what-is-harness.md`: 하네스란 무엇인가 — 단일 에이전트 한계, 환경 설계의 중요성, 하네스의 정의 및 오해 해소

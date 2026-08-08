@@ -209,3 +209,21 @@ public void mockMvcSetup() {
 
 - Part 1: 하네스 엔지니어링의 기초 개념
   - `part1/01-what-is-harness.md`: 하네스란 무엇인가 — 단일 에이전트 한계, 환경 설계의 중요성, 하네스의 정의 및 오해 해소
+  - `part1/02-quick-start.md`: 30분 퀵스타트 가이드
+
+- Part 2: 에이전트·스킬·오케스트레이터 설계
+  - `part2/03-srp-for-agent-skill-orchestrator.md`: 에이전트·스킬·오케스트레이터의 책임 분리
+  - `part2/04-a-thing-that-defines-agent.md`: 에이전트를 정의한다는 것 — 역할 계약서 관점
+  - `part2/05-a-technique-how-to-design-skills.md`: 스킬 설계의 기술 — description 트리거링
+  - `part2/06-orchestrator.md`: 오케스트레이터 — TeamCreate·TaskCreate·SendMessage
+
+- Part 3: 메타 하네스 스킬과 팀 아키텍처
+  - `.claude/skills/harness/SKILL.md`: 메타 하네스 스킬 — 하네스 구성을 체계화하는 6단계 파이프라인
+  - `part3/07-meta-harness-skills.md`: 메타 하네스 스킬과 6단계 파이프라인 학습 노트
+  - `part3/08-six-architecture-patterns.md`: 여섯 가지 아키텍처 패턴 — 파이프라인·팬아웃·전문가풀·생성-검증·감독자·계층적위임
+  - `part3/09-team-subagent-hybrid.md`: 팀 / 서브에이전트 / 하이브리드 실행 모드 선택 기준
+  - `part3/10-harness-registration-evolution.md`: 하네스 등록과 진화 — CLAUDE.md 포인터와 생명주기
+
+- Part 4: 하네스 실전 예제
+  - `part4/ch11-example-code-review-team/`: 코드 리뷰 자동화 하네스 — 4 에이전트(정적분석·설계검토·보안감사·리팩터링) + 1 스킬
+  - `part4/ch12-full-stack-development-team/`: 풀스택 개발 팀 하네스 — 8 에이전트(기획·API설계·UI설계·DB마이그레이션·백엔드·프론트엔드·테스트·경계검증) 서브하네스

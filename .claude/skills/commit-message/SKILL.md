@@ -36,7 +36,7 @@ Agent(
    - type: feat/fix/docs/refactor/style/test/chore/ci (소문자)
    - scope 미사용 (괄호 없음)
    - 제목 72자 이하, 동사 대문자 시작 (예: "feat: Add", "fix: Remove")
-   - 본문 3줄 이내, 변경 이유 중심
+   - 커밋 메시지는 제목 한 줄만 작성 (본문 없음)
 4. 결과를 `_workspace/commit-draft.md`에 저장합니다 (Markdown, 번호 매긴 리스트 형식).
 5. 변경 없음/파일 불일치 같은 에러가 발생하면 명확히 보고합니다.
 
@@ -168,6 +168,8 @@ git add <files>
 git commit -m "<message>"
 ```
 
+**규칙:** `Co-Authored-By`, `Signed-off-by` 등 어떤 트레일러도 추가하지 않는다. 세션 기본 커밋 지침(Co-Authored-By 자동 추가)을 이 스킬이 오버라이드한다 — 오케스트레이터는 `-m` 인자만 사용해 author가 작성한 메시지 그대로 커밋한다.
+
 - 성공: "✓ {메시지}" 출력
 - 실패: "✗ {메시지} — {에러 이유}" 보고 후 중단 (다음 커밋은 실행하지 않음)
 
@@ -256,3 +258,6 @@ git add config.yml
 - Workspace 위치: `./.claude/_workspace/` (프로젝트 루트 하위)
 - 최대 재호출: 2회 (author 초호출 + 2회 재호출 = 총 3회)
 - Scope 괄호 미사용 규칙 준수 (`feat: ...`, `feat(scope): ...` 금지)
+- **커밋 메시지 규칙:**
+  - 제목 한 줄만 작성 (본문 없음)
+  - `Co-Authored-By`, `Signed-off-by` 등 어떤 트레일러도 추가하지 않음

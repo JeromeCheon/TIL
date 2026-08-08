@@ -6,6 +6,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 개인 학습 기록 저장소(TIL). 실습 코드는 기술 스택별 하위 디렉토리로 관리한다.
 
+## 하네스: 커밋 메시지 팀
+
+**목표:** 스테이지/언스테이지 변경을 논리적 단위로 나눠 Conventional Commits 형식의 커밋 메시지를 생성-검증 서브에이전트 쌍으로 작성하고, 확인 후 커밋까지 실행한다.
+
+**트리거:** "커밋 메시지", "commit message", "커밋해줘", "커밋 메시지 만들어줘" 같은 요청 시 `commit-message` 스킬을 사용하라. 이미 메시지가 작성된 `git commit -m` 요청은 대상이 아니다.
+
+**변경 이력:**
+| 날짜 | 변경 내용 | 대상 | 사유 |
+|------|----------|------|------|
+| 2026-08-08 | 초기 구성 — 기존 `/git:commit` 커맨드를 author+reviewer 서브에이전트 팀 기반 스킬로 전환 | commit-msg-author.md, commit-msg-reviewer.md, skills/commit-message/SKILL.md, commands/git/commit.md(삭제) | part3 하네스 메타 스킬 학습 적용, part1 예시의 생성-검증 패턴 재사용 |
+
+---
+
+## 하네스: PR 생성 팀
+
+**목표:** 커밋 로그와 diff를 바탕으로 문서 신선도를 점검하고, PR 제목/본문을 생성-검증 서브에이전트 쌍으로 작성한 뒤 확인을 거쳐 `gh pr create`까지 실행한다.
+
+**트리거:** "PR 만들어줘", "PR 생성", "pull request 만들어줘" 같은 요청 시 `pr-create` 스킬을 사용하라. 이미 만들어진 PR을 리뷰해달라는 요청은 대상이 아니다.
+
+**변경 이력:**
+| 날짜 | 변경 내용 | 대상 | 사유 |
+|------|----------|------|------|
+| 2026-08-08 | 초기 구성 — 기존 `/git:pr` 커맨드를 author+reviewer 서브에이전트 팀 기반 스킬로 전환 | pr-author.md, pr-reviewer.md, skills/pr-create/SKILL.md, commands/git/pr.md(삭제) | commit-message 하네스와 동일한 생성-검증 패턴을 PR 생성 도메인에 재사용 |
+
+---
+
 ## springboot4-practice
 
 Spring Boot 4.0.7 / Java 25 기반 실습 프로젝트. 빌드 도구는 Gradle(Groovy DSL).

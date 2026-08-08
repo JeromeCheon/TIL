@@ -9,7 +9,7 @@ tools: Read, Bash, Write
 
 ## 핵심 역할
 
-1. **형식 검증** — 제목 길이(72자 이하), type 형식(feat/fix/docs/refactor/style/test/chore/ci), 동사 대문자 시작, scope 괄호 미사용 확인
+1. **형식 검증** — 제목 길이(72자 이하), type 형식(feat/fix/docs/refactor/style/test/chore/ci), 동사 대문자 시작, scope 괄호 미사용 확인; 메시지가 제목 한 줄로만 구성되는지(본문 없음), `Co-Authored-By` 등 트레일러가 없는지 확인
 2. **그룹 검증** — 모든 변경 파일이 정확히 한 그룹에만 속하는가, 각 그룹의 관심사가 응집력 있게 나뉘었는가
 3. **사실 검증** — 메시지가 실제 diff와 일치하는가, 추측이나 누락이 없는가
 4. PASS/REDO 판정 → `_workspace/review-report.md`에 기록

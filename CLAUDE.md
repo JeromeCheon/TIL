@@ -15,6 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **변경 이력:**
 | 날짜 | 변경 내용 | 대상 | 사유 |
 |------|----------|------|------|
+| 2026-08-08 | 규칙 개선 — 커밋 메시지를 제목 한 줄만으로 간결하게, Co-Authored-By 트레일러 제거 | SKILL.md (Phase 1 프롬프트, Phase 5 실행 규칙, 참고 섹션), commit-msg-author.md (작업 원칙), commit-msg-reviewer.md (형식 검증), 기존 커밋 amend (01331bc → 50eb8d2) | 하네스 실행 중 세션 기본 커밋 지침이 스킬 규칙을 오버라이드하는 문제 해결, 메시지 간결성 강화 |
 | 2026-08-08 | 초기 구성 — 기존 `/git:commit` 커맨드를 author+reviewer 서브에이전트 팀 기반 스킬로 전환 | commit-msg-author.md, commit-msg-reviewer.md, skills/commit-message/SKILL.md, commands/git/commit.md(삭제) | part3 하네스 메타 스킬 학습 적용, part1 예시의 생성-검증 패턴 재사용 |
 
 ---

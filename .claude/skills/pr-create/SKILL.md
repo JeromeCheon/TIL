@@ -54,7 +54,7 @@ Agent(
    - 템플릿의 체크박스는 실제 근거가 있을 때만 체크합니다.
    - 한국어로 변경 이유(why)를 서술합니다.
 
-8. 모든 결과를 `_workspace/pr-draft.md`에 저장합니다.
+8. 모든 결과를 `.claude/_workspace/pr-draft.md`에 저장합니다.
    형식: Doc Staleness 섹션 + Title + Body
 
 [기존 피드백이 있으면 여기에 포함됨]
@@ -63,7 +63,7 @@ Agent(
 )
 ```
 
-산출물: `_workspace/pr-draft.md`
+산출물: `.claude/_workspace/pr-draft.md`
 
 ### Phase 2: Reviewer 호출
 
@@ -76,7 +76,7 @@ Agent(
   description: "pr-reviewer 에이전트 호출",
   prompt: """
 당신은 pr-reviewer입니다. 다음을 실행하세요:
-1. `_workspace/pr-draft.md`를 읽습니다.
+1. `.claude/_workspace/pr-draft.md`를 읽습니다.
 
 2. `git diff <target>...HEAD`(원본 diff)를 확인합니다.
 
@@ -90,7 +90,7 @@ Agent(
 
    **Doc Staleness:** author의 발견이 정확한가. 다시 한 번 diff 경로와 CLAUDE.md/README.md를 대조하여 검증합니다.
 
-4. PASS 또는 REDO 판정을 `_workspace/pr-review-report.md`에 기록합니다:
+4. PASS 또는 REDO 판정을 `.claude/_workspace/pr-review-report.md`에 기록합니다:
    - PASS: 모든 검증 완료
    - REDO: 각 카테고리별 구체적 사유 + author가 바로 적용할 수정 지시
 
@@ -102,11 +102,11 @@ Agent(
 )
 ```
 
-산출물: `_workspace/pr-review-report.md`
+산출물: `.claude/_workspace/pr-review-report.md`
 
 ### Phase 3: 판정 분기
 
-`_workspace/pr-review-report.md`를 읽어 판정을 확인한다.
+`.claude/_workspace/pr-review-report.md`를 읽어 판정을 확인한다.
 
 - **PASS** → Phase 4로 진행
 - **REDO** (1~2회차) → Phase 3-1로 이동
@@ -123,11 +123,11 @@ Agent(
   description: "pr-author 재호출 (REDO 수정)",
   prompt: """
 당신은 pr-author입니다. 다음을 실행하세요:
-1. `_workspace/pr-draft.md` 현재 버전을 읽습니다.
+1. `.claude/_workspace/pr-draft.md` 현재 버전을 읽습니다.
 2. 다음 리뷰어 피드백을 반영합니다:
    [reviewer의 수정 지시 전문]
 3. 피드백이 있는 섹션만 재작성합니다. 이미 PASS된 섹션은 그대로 둡니다.
-4. 수정된 초안을 `_workspace/pr-draft.md`에 덮어쓰고 저장합니다.
+4. 수정된 초안을 `.claude/_workspace/pr-draft.md`에 덮어쓰고 저장합니다.
 
 기한: 30초 이내 완료
 """,
@@ -151,7 +151,7 @@ Agent(
 
 ### Phase 4: 문서 신선도 게이트
 
-PASS 후 `_workspace/pr-draft.md`의 Doc Staleness 섹션을 확인한다.
+PASS 후 `.claude/_workspace/pr-draft.md`의 Doc Staleness 섹션을 확인한다.
 
 - **"No stale documents found."** → Phase 5로 진행
 - **발견 항목 있음** → 사용자에게 `AskUserQuestion`으로 확인:
@@ -170,7 +170,7 @@ PASS 후 `_workspace/pr-draft.md`의 Doc Staleness 섹션을 확인한다.
 
 ### Phase 5: 최종 확인
 
-`_workspace/pr-draft.md`의 최종 제목/본문을 사용자에게 제시하고, 진행/취소/수정 여부를 `AskUserQuestion`으로 확인한다.
+`.claude/_workspace/pr-draft.md`의 최종 제목/본문을 사용자에게 제시하고, 진행/취소/수정 여부를 `AskUserQuestion`으로 확인한다.
 
 ```
 AskUserQuestion(

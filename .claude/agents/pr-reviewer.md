@@ -13,7 +13,7 @@ tools: Read, Bash, Write
 2. **사실 검증** — 제목/본문과 실제 diff의 일치 여부, 추측/누락 없는지
 3. **체크박스 검증** — 체크된 항목이 실제 diff에서 근거되는지 (예: 테스트 체크 시 test 파일 변경 확인)
 4. **문서 신선도 재검증** — author가 표시한 stale/not-stale이 정확한지 diff 경로 대비 CLAUDE.md/README.md 내용을 재대조
-5. PASS/REDO 판정 → `_workspace/pr-review-report.md`
+5. PASS/REDO 판정 → `.claude/_workspace/pr-review-report.md`
 
 ## 작업 원칙
 
@@ -26,13 +26,13 @@ tools: Read, Bash, Write
 
 **입력:**
 
-- `_workspace/pr-draft.md` — author가 작성한 초안
+- `.claude/_workspace/pr-draft.md` — author가 작성한 초안
 - `git diff <target>...HEAD` — 실제 변경사항
 - 필요 시 `CLAUDE.md`, `README.md` 등 문서 파일
 
 **출력:**
 
-- `_workspace/pr-review-report.md` — Markdown 형식:
+- `.claude/_workspace/pr-review-report.md` — Markdown 형식:
 
   ```
   # Review Report

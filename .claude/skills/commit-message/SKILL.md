@@ -37,7 +37,7 @@ Agent(
    - scope 미사용 (괄호 없음)
    - 제목 72자 이하, 동사 대문자 시작 (예: "feat: Add", "fix: Remove")
    - 커밋 메시지는 제목 한 줄만 작성 (본문 없음)
-4. 결과를 `_workspace/commit-draft.md`에 저장합니다 (Markdown, 번호 매긴 리스트 형식).
+4. 결과를 `.claude/_workspace/commit-draft.md`에 저장합니다 (Markdown, 번호 매긴 리스트 형식).
 5. 변경 없음/파일 불일치 같은 에러가 발생하면 명확히 보고합니다.
 
 [기존 피드백이 있으면 여기에 포함됨]
@@ -46,7 +46,7 @@ Agent(
 )
 ```
 
-산출물: `_workspace/commit-draft.md`
+산출물: `.claude/_workspace/commit-draft.md`
 
 ### Phase 2: Reviewer 호출
 
@@ -59,13 +59,13 @@ Agent(
   description: "commit-msg-reviewer 에이전트 호출",
   prompt: """
 당신은 commit-msg-reviewer입니다. 다음을 실행하세요:
-1. `_workspace/commit-draft.md`를 읽습니다.
+1. `.claude/_workspace/commit-draft.md`를 읽습니다.
 2. `git diff --staged` + `git diff`(unstaged 포함) + `git log -10 --oneline`을 확인합니다.
 3. 각 그룹(커밋)을 평가합니다:
    - 형식: type/제목 길이/동사 대문자/scope 미사용 확인
    - 그룹: 모든 파일이 정확히 한 그룹에만 속하는가, 응집력 있는가
    - 사실: 메시지가 diff와 일치하는가, 추측/누락 없는가
-4. PASS 또는 REDO 판정을 `_workspace/review-report.md`에 기록합니다:
+4. PASS 또는 REDO 판정을 `.claude/_workspace/review-report.md`에 기록합니다:
    - PASS: "모두 검증됨"
    - REDO: 각 항목의 구체적 사유 + author가 바로 적용할 수정 지시
 5. 주관적 기준(톤, 문장력)은 평가하지 않습니다. 객관적 기준만 사용.
@@ -77,11 +77,11 @@ Agent(
 )
 ```
 
-산출물: `_workspace/review-report.md`
+산출물: `.claude/_workspace/review-report.md`
 
 ### Phase 3: 판정 분기
 
-`_workspace/review-report.md`를 읽어 판정을 확인한다.
+`.claude/_workspace/review-report.md`를 읽어 판정을 확인한다.
 
 - **PASS** → Phase 4로 진행
 - **REDO** (1~2회차) → Phase 3-1로 이동
@@ -98,11 +98,11 @@ Agent(
   description: "commit-msg-author 재호출 (REDO 수정)",
   prompt: """
 당신은 commit-msg-author입니다. 다음을 실행하세요:
-1. `_workspace/commit-draft.md` 현재 버전을 읽습니다.
+1. `.claude/_workspace/commit-draft.md` 현재 버전을 읽습니다.
 2. 다음 리뷰어 피드백을 반영합니다:
    [reviewer의 수정 지시 전문]
 3. 피드백이 있는 그룹만 재작성합니다. 이미 PASS된 그룹은 그대로 둡니다.
-4. 수정된 초안을 `_workspace/commit-draft.md`에 덮어쓰고 저장합니다.
+4. 수정된 초안을 `.claude/_workspace/commit-draft.md`에 덮어쓰고 저장합니다.
 
 기한: 30초 이내 완료
 """,
@@ -126,7 +126,7 @@ Agent(
 
 ### Phase 4: 최종 확인
 
-`_workspace/commit-draft.md`의 최종 커밋 목록(메시지+파일)을 사용자에게 제시하고, 진행/취소/수정 여부를 `AskUserQuestion`으로 확인한다.
+`.claude/_workspace/commit-draft.md`의 최종 커밋 목록(메시지+파일)을 사용자에게 제시하고, 진행/취소/수정 여부를 `AskUserQuestion`으로 확인한다.
 
 ```
 AskUserQuestion(
@@ -160,7 +160,7 @@ AskUserQuestion(
 
 ### Phase 5: 커밋 실행
 
-`_workspace/commit-draft.md`의 각 커밋을 순서대로 생성한다.
+`.claude/_workspace/commit-draft.md`의 각 커밋을 순서대로 생성한다.
 
 ```bash
 # 각 그룹별

@@ -11,7 +11,7 @@ tools: Bash, Read, Write
 
 1. **컨텍스트 수집** — 현재 브랜치, target 브랜치(기본값 main), 로그, diff, 템플릿 읽기
 2. **문서 신선도 체크** — 변경된 파일 경로 기준 관련 CLAUDE.md/README.md 식별 후, 새 env var/의존성/라우트/디렉터리가 해당 문서에 반영되지 않았는지 확인
-3. **PR 초안 작성** — 제목(conventional commit 스타일, 영어, 72자 이하) + 본문(템플릿 체크박스 + 한국어 서술) 초안 → `_workspace/pr-draft.md`
+3. **PR 초안 작성** — 제목(conventional commit 스타일, 영어, 72자 이하) + 본문(템플릿 체크박스 + 한국어 서술) 초안 → `.claude/_workspace/pr-draft.md`
 4. 형식/사실 검증 대비 조준 — reviewer가 검증하기 쉽게, 근거 명확히 기록
 
 ## 작업 원칙
@@ -35,7 +35,7 @@ tools: Bash, Read, Write
 
 **출력:**
 
-- `_workspace/pr-draft.md` — Markdown 형식:
+- `.claude/_workspace/pr-draft.md` — Markdown 형식:
 
   ```
   # PR Draft

@@ -12,7 +12,7 @@ tools: Bash, Read, Write
 1. 현재 변경사항 확인 — `git status --porcelain`, `git diff --staged`, `git diff`(unstaged 포함)
 2. 최근 커밋 스타일 파악 — `git log -10 --oneline`
 3. 파일을 **논리적 목적별**로 그룹화 — 기능/버그수정/설정/문서/리팩터링/스타일/테스트/CI 등
-4. Conventional Commits 규칙 적용해 그룹별 메시지 초안 작성 → `_workspace/commit-draft.md`
+4. Conventional Commits 규칙 적용해 그룹별 메시지 초안 작성 → `.claude/_workspace/commit-draft.md`
 
 ## 작업 원칙
 
@@ -35,7 +35,7 @@ tools: Bash, Read, Write
 
 **출력:**
 
-- `_workspace/commit-draft.md` — Markdown 형식, 번호 매긴 항목 리스트
+- `.claude/_workspace/commit-draft.md` — Markdown 형식, 번호 매긴 항목 리스트
 
   ```
   # Proposed Commits

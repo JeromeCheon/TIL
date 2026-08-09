@@ -5,3 +5,6 @@
 # intellij
 .idea
 .DS_Store
+
+# workspace
+.claude/_workspace

@@ -254,3 +254,5 @@ public void mockMvcSetup() {
 - Part 4: 하네스 실전 예제
   - `part4/ch11-example-code-review-team/`: 코드 리뷰 자동화 하네스 — 4 에이전트(정적분석·설계검토·보안감사·리팩터링) + 1 스킬
   - `part4/ch12-full-stack-development-team/`: 풀스택 개발 팀 하네스 — 8 에이전트(기획·API설계·UI설계·DB마이그레이션·백엔드·프론트엔드·테스트·경계검증) 서브하네스
+  - `part4/ch13-legacy-code-refactor-team/`: 레거시 코드 리팩터링 하네스 — dependency-mapper 에이전트로 의존성 매핑 절차 실습
+  - `part4/ch14-debugging-rca-team/`: 디버깅 RCA 팀 하네스 — reproducer·reviewer 에이전트로 근본 원인 분석 절차 실습

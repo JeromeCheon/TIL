@@ -1,0 +1,12 @@
+type Query {
+  getUser(userId: ID!): User!
+
+  getProducts: [Product!]!
+
+  getUserCart(userId: ID!): Cart!
+
+  search(keyword: String!): [SearchResult!]!
+}
+
+# union 정의 시 interface 를 지정해주는 건 불가(Product 불가)
+union SearchResult = User | Electronics | Clothing

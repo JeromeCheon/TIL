@@ -19,6 +19,14 @@
 - **참고 도서:** 스프링 부트 4 개발자 되기 + AI 자바편 — 신선영 저
 - **완료 여부** 7/15일 최종 학습 완료
 
+### graphql_inflearn
+
+- **목적:** Inflearn GraphQL 강의 기반 Apollo Server 실습
+- **기술 스택:** Node.js · Express 4 · Apollo Server 3 (`apollo-server-express`) · GraphQL · graphql-ws · ws · graphql-scalars · @graphql-tools
+- **기능:** 스키마 파일 분리(`schemas/*.graphql`) + User/Cart/Product/Search 리졸버 + 인메모리 mock DB + WebSocket 기반 `newProduct` Subscription
+- **실행:** `node index.js` → `http://localhost:8081/graphql`
+- **참고 강의:** Inflearn GraphQL 강의
+
 ### harness-engineering-with-claude
 
 - **목적:** AI 에이전트 팀 설계 및 하네스 엔지니어링 실전 학습
@@ -36,6 +44,7 @@
 TIL/
 ├── springboot4-practice/              # Spring Boot 4 실습
 ├── spring4-blog-project/              # Spring Boot 4 블로그 API 실습
+├── graphql_inflearn/                  # Inflearn GraphQL(Apollo Server) 실습
 ├── harness-engineering-with-claude/   # 하네스 엔지니어링 with 클로드 코드 실습
 └── README.md
 ```

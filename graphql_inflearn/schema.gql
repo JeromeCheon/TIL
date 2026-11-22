@@ -1,0 +1,96 @@
+type CartItem {
+  id: ID!
+  product: Product!
+  quantity: Int!
+}
+
+type Cart {
+  id: ID!
+  user: User!
+  items: [CartItem!]!
+  totalAmount: Float!
+}
+
+input AddCartItemInput {
+  userId: ID!
+  productId: ID!
+  quantity: Int!
+}
+
+input DeleteCartItemInput {
+  userId: ID!
+  productId: ID!
+}
+interface Product {
+  id: ID!
+  name: String!
+  price: Float!
+  productType: ProductType!
+}
+
+type Electronics implements Product {
+  id: ID!
+  name: String!
+  price: Float!
+  productType: ProductType!
+  warrentyPeriod: String!
+}
+
+type Clothing implements Product {
+  id: ID!
+  name: String!
+  price: Float!
+  productType: ProductType!
+  size: String!
+}
+
+enum ProductType {
+  ELECTRONICS
+  CLOTHING
+}
+
+input AddProductInput {
+  name: String!
+  price: Float!
+  productType: ProductType!
+  warrentyPeriod: String # nullable
+  size: String # nullable
+}
+scalar DateTime
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  cart: Cart!
+  createdAt: DateTime!
+}
+
+input AddUserInput {
+  name: String!
+  email: String!
+}
+type Mutation {
+  addUser(input: AddUserInput!): User!
+
+  addProduct(input: AddProductInput!): Product!
+
+  addCartItem(input: AddCartItemInput!): Cart!
+
+  deleteCartItem(input: DeleteCartItemInput!): Cart!
+}
+type Subscription {
+  newProduct(productName: String): Product!
+}
+type Query {
+  getUser(userId: ID!): User!
+
+  getProducts: [Product!]!
+
+  getUserCart(userId: ID!): Cart!
+
+  search(keyword: String!): [SearchResult!]!
+}
+
+# union 정의 시 interface 를 지정해주는 건 불가(Product 불가)
+union SearchResult = User | Electronics | Clothing

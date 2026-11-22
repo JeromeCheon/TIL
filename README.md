@@ -22,7 +22,7 @@
 ### graphql_inflearn
 
 - **목적:** Inflearn GraphQL 강의 기반 Apollo Server 실습
-- **기술 스택:** Node.js · Express 4 · Apollo Server 3 (`apollo-server-express`) · GraphQL · graphql-ws · ws · graphql-scalars · @graphql-tools
+- **기술 스택:** Node.js · Express 4 · Apollo Server 3 (`apollo-server-express`) · GraphQL · graphql-ws · ws · graphql-scalars · graphql-subscriptions · uuid · @graphql-tools
 - **기능:** 스키마 파일 분리(`schemas/*.graphql`) + User/Cart/Product/Search 리졸버 + 인메모리 mock DB + WebSocket 기반 `newProduct` Subscription
 - **실행:** `node index.js` → `http://localhost:8081/graphql`
 - **참고 강의:** Inflearn GraphQL 강의

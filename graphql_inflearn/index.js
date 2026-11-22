@@ -1,6 +1,9 @@
 const express = require("express");
 const { ApolloServer, gql } = require("apollo-server-express");
 const fs = require("fs").promises;
+const { mergeResolvers } = require("@graphql-tools/merge");
+const userResolver = require("./resolvers/user-resolvers");
+
 const app = express();
 const port = 8081;
 
@@ -13,7 +16,7 @@ const schemaFiles = [
   "./schemas/cart.graphql",
 ];
 
-const resolvers = {};
+const resolvers = mergeResolvers([userResolver]);
 
 async function startServer() {
   const schemas = await Promise.all(

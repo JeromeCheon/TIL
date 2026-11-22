@@ -6,6 +6,7 @@ const { makeExecutableSchema } = require("@graphql-tools/schema");
 const userResolver = require("./resolvers/user-resolvers");
 const cartResolver = require("./resolvers/cart-resolvers");
 const productResolver = require("./resolvers/product-resolvers");
+const searchResolver = require("./resolvers/search-resolvers");
 const { WebSocketServer } = require("ws");
 const { useServer } = require("graphql-ws/use/ws");
 
@@ -25,7 +26,12 @@ const schemaFiles = [
   "./schemas/cart.graphql",
 ];
 
-const resolvers = mergeResolvers([userResolver, cartResolver, productResolver]);
+const resolvers = mergeResolvers([
+  userResolver,
+  cartResolver,
+  productResolver,
+  searchResolver,
+]);
 
 async function startServer() {
   const schemas = await Promise.all(

@@ -1,23 +1,25 @@
 const express = require("express");
 const { ApolloServer, gql } = require("apollo-server-express");
-
+const fs = require("fs").promises;
 const app = express();
 const port = 8081;
 
-const typeDefs = gql`
-  type Query {
-    hello: String!
-  }
-`;
+const schemaFiles = [
+  "./schemas/query.graphql",
+  "./schemas/mutation.graphql",
+  "./schemas/subscription.graphql",
+  "./schemas/product.graphql",
+  "./schemas/user.graphql",
+  "./schemas/cart.graphql",
+];
 
-const resolvers = {
-  Query: {
-    hello: () => "Hello, Goopang GraphQL world!",
-  },
-};
+const resolvers = {};
 
 async function startServer() {
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const schemas = await Promise.all(
+    schemaFiles.map((file) => fs.readFile(file, "utf-8")),
+  );
+  const server = new ApolloServer({ typeDefs: schemas, resolvers });
   await server.start();
   server.applyMiddleware({ app });
 

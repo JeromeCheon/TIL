@@ -242,6 +242,7 @@ index.js (Express + ApolloServer + graphql-ws WebSocketServer)
 ```
 
 - 스키마는 `schemas/`의 `.graphql` 파일(query/mutation/subscription/product/user/cart)로 분리하며, `schema.gql`은 전체 스키마를 합친 참고용 파일이다.
+- 리소스 ID는 `uuid` v4의 앞 5자리(`uuidv4().substring(0, 5)`)로 생성한다 (user/cart/product 리졸버).
 - Subscription(`newProduct`)은 `graphql-subscriptions`의 `PubSub`을 context로 주입하고, `graphql-ws` + `ws`로 `/graphql` 경로의 WebSocket 위에서 동작한다.
 
 ---

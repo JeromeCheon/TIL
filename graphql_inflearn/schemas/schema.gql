@@ -33,7 +33,7 @@ type Electronics implements Product {
   name: String!
   price: Float!
   productType: ProductType!
-  warrentyPeriod: String!
+  warrantyPeriod: String!
 }
 
 type Clothing implements Product {
@@ -53,7 +53,7 @@ input AddProductInput {
   name: String!
   price: Float!
   productType: ProductType!
-  warrentyPeriod: String # nullable
+  warrantyPeriod: String # nullable
   size: String # nullable
 }
 scalar DateTime

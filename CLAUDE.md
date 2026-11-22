@@ -215,6 +215,37 @@ public void mockMvcSetup() {
 
 ---
 
+## graphql_inflearn
+
+Inflearn GraphQL 강의 기반 Apollo Server 실습 프로젝트. Node.js(CommonJS) + Express 4 + `apollo-server-express` 3. `apollo-server-express@3`은 Express 5를 지원하지 않으므로 Express는 4.x를 유지한다.
+
+### 주요 명령어
+
+```bash
+# 프로젝트 루트는 graphql_inflearn/
+cd graphql_inflearn
+
+# 의존성 설치
+npm install
+
+# 서버 실행 (http://localhost:8081/graphql, 포트는 index.js에 하드코딩)
+node index.js
+```
+
+### 아키텍처
+
+```
+index.js (Express + ApolloServer + graphql-ws WebSocketServer)
+  ├─ schemas/*.graphql        → fs.readFile로 로드 후 makeExecutableSchema
+  ├─ resolvers/*-resolvers.js → mergeResolvers로 통합 (user, cart, product, search)
+  └─ database.js              → 인메모리 mock DB
+```
+
+- 스키마는 `schemas/`의 `.graphql` 파일(query/mutation/subscription/product/user/cart)로 분리하며, `schema.gql`은 전체 스키마를 합친 참고용 파일이다.
+- Subscription(`newProduct`)은 `graphql-subscriptions`의 `PubSub`을 context로 주입하고, `graphql-ws` + `ws`로 `/graphql` 경로의 WebSocket 위에서 동작한다.
+
+---
+
 ## harness-engineering-with-claude
 
 "하네스 엔지니어링 with 클로드 코드" 도서를 따라 AI 에이전트 팀 설계 및 하네스 엔지니어링 실전 학습.
